@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دندانپزشکی مهرگان</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-900:#0B1E3D; --navy-700:#16305C; --navy-500:#3C5D96; --navy-100:#EAF0FB;
+  --white:#FFFFFF; --bg:#F4F7FC; --ink:#132342; --muted:#3F4D66; --line:#DCE3F0;
+  --alert:#C97B2E; --alert-soft:#FBEEE0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy-900:#0A1220; --navy-700:#152241; --navy-500:#6E93D6; --navy-100:#182948;
+    --white:#101B30; --bg:#0A1220; --ink:#E7ECF6; --muted:#A9BEE0; --line:#22314E;
+    --alert:#E3A15C; --alert-soft:#2A2013;
+  }
+}
+:root[data-theme="dark"]{
+  --navy-900:#0A1220; --navy-700:#152241; --navy-500:#6E93D6; --navy-100:#182948;
+  --white:#101B30; --bg:#0A1220; --ink:#E7ECF6; --muted:#A9BEE0; --line:#22314E;
+  --alert:#E3A15C; --alert-soft:#2A2013;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Vazirmatn',system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  display:flex; justify-content:center;
+}
+.app{width:100%; max-width:430px; min-height:100%; display:flex; flex-direction:column; position:relative;}
+.topbar{
+  background:var(--navy-900); color:#fff; padding:20px 20px 16px;
+  display:flex; align-items:center; gap:10px;
+}
+.topbar .mark{font-size:26px;}
+.topbar h1{font-size:18px; font-weight:700; margin:0;}
+.topbar .sub{font-size:12px; opacity:.8; margin-top:1px;}
+.backbtn{background:none;border:none;color:#fff;font-size:15px;font-weight:600;cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:6px;}
+main{flex:1; padding-bottom:96px; overflow-x:hidden;}
+
+/* ---- Today tab ---- */
+.daynav{display:flex; align-items:center; justify-content:space-between; margin:14px 16px 4px; padding:8px 4px; border-bottom:1px solid var(--line);}
+.daynav button{background:none;border:none;font-size:19px;color:var(--navy-700);width:34px;height:34px;border-radius:8px;cursor:pointer;}
+.daynav button:hover{background:var(--navy-100);}
+.daylabel{font-size:15px; font-weight:700;}
+.ledger{margin:6px 16px;}
+.row{display:flex; gap:12px; align-items:flex-start; padding:13px 4px; border-bottom:1px solid var(--line);}
+.time{font-weight:700; font-size:13px; color:var(--navy-700); min-width:46px; padding-top:3px;}
+.details{flex:1;}
+.name{font-size:14.5px; font-weight:600;}
+.note{font-size:12.5px; color:var(--muted); margin-top:2px;}
+.rowmeta{display:flex; gap:6px; margin-top:7px; flex-wrap:wrap;}
+.badge{font-size:11px; padding:3px 9px; border-radius:20px; font-weight:600; cursor:pointer; border:none;}
+.badge.confirmed{background:var(--navy-100); color:var(--navy-700);}
+.badge.pending{background:var(--alert-soft); color:var(--alert);}
+.bell{font-size:13px; padding:3px 8px; border-radius:20px; border:1px solid var(--line); background:var(--white); cursor:pointer; color:var(--muted);}
+.bell.on{background:var(--navy-900); color:#fff; border-color:var(--navy-900);}
+.del{background:none;border:none;color:var(--muted);font-size:17px;cursor:pointer;padding:2px 6px;border-radius:6px;}
+.empty{padding:44px 16px; text-align:center; color:var(--muted); font-size:13.5px; line-height:1.6;}
+
+.fab{position:fixed; left:50%; transform:translateX(-50%); bottom:calc(78px + env(safe-area-inset-bottom,0px)); width:calc(100% - 40px); max-width:390px; background:var(--navy-900); color:#fff; border:none; border-radius:12px; padding:13px; font-size:14.5px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(11,30,61,.25); z-index:5;}
+.form-card{position:fixed; left:50%; transform:translateX(-50%); bottom:0; width:100%; max-width:430px; background:var(--white); border-radius:18px 18px 0 0; padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px)); box-shadow:0 -8px 30px rgba(0,0,0,.18); z-index:20;}
+.form-card h2{font-size:16px; font-weight:700; margin:0 0 12px;}
+.form-card label{display:block; font-size:12px; color:var(--muted); margin-bottom:10px;}
+.form-card input{display:block; width:100%; margin-top:5px; padding:9px 11px; border:1px solid var(--line); border-radius:9px; font-size:14px; background:var(--bg); color:var(--ink); font-family:inherit;}
+.formActions{display:flex; gap:10px; margin-top:2px;}
+.btn{flex:1; padding:10px; border-radius:9px; font-size:13.5px; font-weight:700; border:none; cursor:pointer;}
+.btn.ghost{background:var(--navy-100); color:var(--navy-900);}
+.btn.solid{background:var(--navy-900); color:#fff;}
+.btn.small{flex:none; padding:8px 14px; font-size:12.5px;}
+
+/* ---- Tab bar ---- */
+.tabbar{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:var(--white); border-top:1px solid var(--line); display:flex; padding-bottom:env(safe-area-inset-bottom,0px); z-index:10;}
+.tabbtn{flex:1; background:none; border:none; padding:11px 4px 9px; font-size:11.5px; font-weight:700; color:var(--muted); cursor:pointer; font-family:inherit;}
+.tabbtn .ic{display:block; font-size:18px; margin-bottom:2px;}
+.tabbtn.active{color:var(--navy-900);}
+
+/* ---- Patients list ---- */
+.plist{margin:14px 16px;}
+.pcard{display:flex; justify-content:space-between; align-items:center; padding:14px 4px; border-bottom:1px solid var(--line); cursor:pointer;}
+.pcard .pname{font-size:14.5px; font-weight:700;}
+.pcard .pmeta{font-size:12px; color:var(--muted); margin-top:2px;}
+.pcard .chev{color:var(--muted); font-size:16px;}
+
+/* ---- Patient profile ---- */
+.pheader{padding:16px; background:var(--navy-100); margin:0 0 2px;}
+.pheader .pname{font-size:16px; font-weight:800;}
+.pheader .pmeta{font-size:12px; color:var(--muted); margin-top:3px;}
+.segs{display:flex; gap:6px; overflow-x:auto; padding:12px 16px 8px; -ms-overflow-style:none; scrollbar-width:none;}
+.segs::-webkit-scrollbar{display:none;}
+.seg{flex:none; padding:8px 13px; border-radius:20px; font-size:12.5px; font-weight:600; background:var(--navy-100); color:var(--navy-700); border:none; cursor:pointer; white-space:nowrap; font-family:inherit;}
+.seg.active{background:var(--navy-900); color:#fff;}
+.section{padding:8px 16px 20px;}
+.subtitle{font-size:12px; font-weight:700; color:var(--muted); margin:14px 0 8px;}
+
+.chartbox{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:12px 10px 8px; margin-bottom:2px;}
+.chartbox svg{width:100%; height:112px; display:block;}
+
+.hist-item{padding:10px 2px; border-bottom:1px solid var(--line);}
+.hist-item .d{font-size:11.5px; color:var(--navy-700); font-weight:700;}
+.hist-item .n{font-size:13px; margin-top:2px;}
+
+.filechip{display:flex; align-items:center; gap:10px; padding:11px 4px; border-bottom:1px solid var(--line);}
+.filechip .ic{font-size:17px;}
+.filechip .fn{font-size:13px; font-weight:600;}
+.filechip .fd{font-size:11px; color:var(--muted);}
+.addfile{margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:var(--navy-100); color:var(--navy-900); border:none; border-radius:9px; padding:9px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit;}
+
+.toothgrid{display:grid; grid-template-columns:repeat(16,1fr); gap:4px; margin-bottom:8px;}
+.tooth{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; padding:4px 1px 3px; border-radius:6px; border:1px solid var(--line); background:var(--white); cursor:pointer; font-family:inherit; color:var(--muted);}
+.tooth .ticon{width:15px; height:19px;}
+.tooth .tnum{font-size:8px; font-weight:600; color:inherit;}
+.tooth.has{background:var(--navy-100); color:var(--navy-700); border-color:var(--navy-500);}
+.tooth.sel{outline:2px solid var(--navy-900); outline-offset:1px;}
+.archgap{height:10px;}
+.toothpanel{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:12px; margin-top:8px; font-size:12.5px;}
+.toothpanel .tt{font-weight:700; margin-bottom:6px;}
+.toothpanel .te{padding:6px 0; border-top:1px solid var(--line);}
+.toothpanel .te:first-of-type{border-top:none;}
+
+table.plan{width:100%; border-collapse:collapse; font-size:13px;}
+table.plan td{padding:9px 2px; border-bottom:1px solid var(--line);}
+table.plan tr.head td{font-size:11px; color:var(--muted); font-weight:700; border-bottom:1px solid var(--line); padding-bottom:8px;}
+table.plan td:last-child{text-align:left; font-weight:700; white-space:nowrap;}
+table.plan tr.total td{font-weight:800; border-top:2px solid var(--navy-900); border-bottom:none; padding-top:11px;}
+
+.paysum{display:flex; gap:10px; margin-bottom:12px;}
+.paysum .box{flex:1; background:var(--navy-100); border-radius:12px; padding:12px;}
+.paysum .box .l{font-size:11px; color:var(--muted);}
+.paysum .box .v{font-size:15px; font-weight:800; margin-top:3px;}
+.payrow{display:flex; justify-content:space-between; align-items:center; padding:10px 2px; border-bottom:1px solid var(--line); font-size:13px;}
+.payrow .st{font-size:11px; padding:2px 9px; border-radius:20px; background:var(--navy-100); color:var(--navy-700); font-weight:600;}
+.payform{display:flex; gap:8px; margin-top:12px;}
+.payform input{flex:1; padding:9px 11px; border:1px solid var(--line); border-radius:9px; font-size:13px; background:var(--bg); color:var(--ink); font-family:inherit;}
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="toothIcon" viewBox="0 0 24 24">
+    <path d="M12 2.5C8.5 2.5 5.5 4.6 5.5 8c0 2.6 1.1 4.3 1.7 6.8.5 2.1 1 4.6 1.5 6.4.3 1.1 1.7 1.1 2 0 .5-1.9.9-4.4 1.1-6.2h.4c.2 1.8.6 4.3 1.1 6.2.3 1.1 1.7 1.1 2 0 .5-1.8 1-4.3 1.5-6.4.6-2.5 1.7-4.2 1.7-6.8 0-3.4-3-5.5-6.5-5.5z" fill="currentColor"/>
+  </symbol>
+</svg>
+<div class="app">
+  <div id="topbar"></div>
+  <main id="mainArea"></main>
+  <button id="fab" class="fab" hidden></button>
+  <div id="formCard" class="form-card" hidden>
+    <h2>نوبت جدید</h2>
+    <label>ساعت<input id="fTime" type="time"></label>
+    <label>نام بیمار<input id="fName" type="text" placeholder="مثلاً: جواد رضایی"></label>
+    <label>کار درمانی / یادداشت<input id="fNote" type="text" placeholder="مثلاً: جرم‌گیری، ۳۰ دقیقه"></label>
+    <div class="formActions">
+      <button id="cancelBtn" class="btn ghost">لغو</button>
+      <button id="saveBtn" class="btn solid">ذخیره</button>
+    </div>
+  </div>
+  <nav class="tabbar">
+    <button class="tabbtn active" data-tab="today"><span class="ic">📅</span>امروز</button>
+    <button class="tabbtn" data-tab="patients"><span class="ic">🧑‍🤝‍🧑</span>بیماران</button>
+  </nav>
+</div>
+<script>
+(function(){
+  function toFa(s){ var m={'0':'۰','1':'۱','2':'۲','3':'۳','4':'۴','5':'۵','6':'۶','7':'۷','8':'۸','9':'۹'}; return String(s).replace(/[0-9]/g, function(d){return m[d];}); }
+  function money(n){ return n.toLocaleString('fa-IR')+' تومان'; }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function monthLabels(){
+    var labels=[];
+    for(var i=5;i>=0;i--){
+      var d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-i);
+      labels.push(d.toLocaleDateString('fa-IR',{month:'short'}));
+    }
+    return labels;
+  }
+
+  var appts = {}; // in-memory per date-key, for this demo session only
+  var today = new Date();
+  var activeTab = 'today';
+  var activePatient = null;
+  var activeSection = 'history';
+  var selectedTooth = null;
+
+  var patients = [
+    { id:1, name:'جواد رضایی', phone:'۰۹۱۲۳۴۵۶۷۸۹', dob:'۱۳۶۵/۰۳/۱۲', last:'۱۴۰۳/۰۴/۱۸',
+      visits:[2,4,3,5,4,6],
+      history:[{d:'۱۴۰۳/۰۴/۱۸',n:'جرم‌گیری کامل و معاینه دوره‌ای'},{d:'۱۴۰۲/۱۱/۰۲',n:'ترمیم کامپوزیت دندان ۱۴'},{d:'۱۴۰۲/۰۶/۲۰',n:'عصب‌کشی دندان ۳۰'}],
+      teeth:{14:[{d:'۱۴۰۲/۱۱/۰۲',t:'ترمیم کامپوزیت',n:'سطح جونده، بدون حساسیت پس از درمان'}], 30:[{d:'۱۴۰۲/۰۶/۲۰',t:'عصب‌کشی',n:'دو جلسه، نیاز به روکش در آینده'}]},
+      files:[{n:'رادیوگرافی_۱۴۰۳۰۴۱۸.jpg', d:'۱۴۰۳/۰۴/۱۸'},{n:'برگه_بیمه.pdf', d:'۱۴۰۲/۰۹/۱۰'}],
+      plan:[{i:'روکش دندان ۳۰', c:4200000, d:'۱۴۰۳/۰۶/۰۱'},{i:'بلیچینگ کامل', c:1800000, d:'۱۴۰۳/۰۶/۱۵'}],
+      payments:[{d:'۱۴۰۳/۰۴/۱۸', a:1200000, s:'پرداخت‌شده'},{d:'۱۴۰۲/۱۱/۰۲', a:900000, s:'پرداخت‌شده'}] },
+    { id:2, name:'مریم احمدی', phone:'۰۹۳۵۱۱۲۲۳۳۴', dob:'۱۳۷۲/۰۷/۰۵', last:'۱۴۰۳/۰۳/۰۱',
+      visits:[1,2,2,3,1,2],
+      history:[{d:'۱۴۰۳/۰۳/۰۱',n:'مشاوره ارتودنسی'},{d:'۱۴۰۲/۱۲/۱۴',n:'جرم‌گیری'}],
+      teeth:{19:[{d:'۱۴۰۲/۱۲/۱۴',t:'ترمیم آمالگام قدیمی برداشته شد',n:'جایگزین با کامپوزیت'}]},
+      files:[{n:'OPG_1402.pdf', d:'۱۴۰۲/۱۲/۱۴'}],
+      plan:[{i:'دوره درمان ارتودنسی (مشاوره اولیه)', c:0, d:'۱۴۰۳/۰۵/۱۰'}],
+      payments:[] },
+    { id:3, name:'علی حسینی', phone:'۰۹۱۹۸۸۷۷۶۶۵', dob:'۱۳۸۰/۰۱/۲۰', last:'۱۴۰۲/۱۰/۱۱',
+      visits:[0,1,0,1,0,1],
+      history:[{d:'۱۴۰۲/۱۰/۱۱',n:'کشیدن دندان عقل'}],
+      teeth:{}, files:[], plan:[], payments:[{d:'۱۴۰۲/۱۰/۱۱', a:2500000, s:'پرداخت‌شده'}] },
+    { id:4, name:'سارا کریمی', phone:'۰۹۹۱۲۳۴۵۵۶۷', dob:'۱۳۶۹/۱۱/۰۹', last:'—',
+      visits:[0,0,0,0,0,1], history:[], teeth:{}, files:[], plan:[], payments:[] }
+  ];
+
+  function dateKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function formatDay(d){ return d.toLocaleDateString('fa-IR',{weekday:'long', month:'long', day:'numeric'}); }
+
+  function setTopbar(mode, patient){
+    var tb = document.getElementById('topbar');
+    if(mode === 'profile'){
+      tb.innerHTML = '<div class="topbar"><button class="backbtn" id="backBtn">→ بازگشت</button></div>';
+      document.getElementById('backBtn').addEventListener('click', function(){ activePatient=null; render(); });
+    } else {
+      tb.innerHTML = '<div class="topbar"><span class="mark">🦷</span><div><h1>دندانپزشکی مهرگان</h1><div class="sub">'+(mode==='today' ? 'دفتر روزانه نوبت‌ها' : 'پرونده بیماران')+'</div></div></div>';
+    }
+  }
+
+  function renderToday(){
+    setTopbar('today');
+    document.getElementById('fab').hidden = false;
+    document.getElementById('fab').textContent = '+ نوبت جدید';
+    var key = dateKey(today);
+    if(!appts[key]) appts[key] = [];
+    var list = appts[key].slice().sort(function(a,b){ return a.time.localeCompare(b.time); });
+    var html = '<div class="daynav"><button id="prevDay">›</button><div class="daylabel">'+formatDay(today)+'</div><button id="nextDay">‹</button></div><div class="ledger">';
+    if(list.length===0){
+      html += '<div class="empty">امروز نوبتی ثبت نشده — با «نوبت جدید» شروع کنید.</div>';
+    } else {
+      list.forEach(function(a){
+        html += '<div class="row"><div class="time">'+toFa(a.time)+'</div><div class="details">'+
+          '<div class="name">'+esc(a.name)+'</div><div class="note">'+esc(a.note||'')+'</div>'+
+          '<div class="rowmeta"><button class="badge '+(a.status==='confirmed'?'confirmed':'pending')+'" data-id="'+a.id+'" data-act="status">'+(a.status==='confirmed'?'تایید شده':'در انتظار تایید')+'</button>'+
+          '<button class="bell '+(a.reminder?'on':'')+'" data-id="'+a.id+'" data-act="bell">🔔 '+(a.reminder?'یادآوری فعال':'یادآوری')+'</button></div>'+
+          '</div><button class="del" data-id="'+a.id+'" data-act="del">×</button></div>';
+      });
+    }
+    html += '</div>';
+    document.getElementById('mainArea').innerHTML = html;
+    document.getElementById('prevDay').addEventListener('click', function(){ today.setDate(today.getDate()-1); renderToday(); });
+    document.getElementById('nextDay').addEventListener('click', function(){ today.setDate(today.getDate()+1); renderToday(); });
+    document.querySelectorAll('[data-act="status"]').forEach(function(b){ b.addEventListener('click', function(){
+      var a = list.find(function(x){return x.id==b.dataset.id;}); a.status = a.status==='confirmed'?'pending':'confirmed'; renderToday();
+    });});
+    document.querySelectorAll('[data-act="bell"]').forEach(function(b){ b.addEventListener('click', function(){
+      var a = list.find(function(x){return x.id==b.dataset.id;}); a.reminder = !a.reminder; renderToday();
+    });});
+    document.querySelectorAll('[data-act="del"]').forEach(function(b){ b.addEventListener('click', function(){
+      appts[key] = appts[key].filter(function(x){return x.id!=b.dataset.id;}); renderToday();
+    });});
+  }
+
+  function renderPatientsList(){
+    setTopbar('patients');
+    document.getElementById('fab').hidden = true;
+    var html = '<div class="plist">';
+    patients.forEach(function(p){
+      html += '<div class="pcard" data-id="'+p.id+'"><div><div class="pname">'+esc(p.name)+'</div><div class="pmeta">آخرین ویزیت: '+esc(p.last)+'</div></div><div class="chev">‹</div></div>';
+    });
+    html += '</div>';
+    document.getElementById('mainArea').innerHTML = html;
+    document.querySelectorAll('.pcard').forEach(function(c){ c.addEventListener('click', function(){
+      activePatient = patients.find(function(p){return p.id==c.dataset.id;}); activeSection='history'; selectedTooth=null; renderProfile();
+    });});
+  }
+
+  function barChart(values){
+    var w=300,h=112,gap=8,bw=w/values.length-gap, max=Math.max.apply(null,values.concat([1]));
+    var labels = monthLabels();
+    var bars='', vals='', labs='';
+    values.forEach(function(v,i){
+      var bh = 8 + (v/max)*54, x=i*(bw+gap)+gap/2, y=70-bh;
+      bars += '<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" style="fill:var(--navy-500)"></rect>';
+      vals += '<text x="'+(x+bw/2)+'" y="'+(y-5)+'" font-size="9" text-anchor="middle" style="fill:var(--muted)">'+toFa(v)+'</text>';
+      labs += '<text x="'+(x+bw/2)+'" y="90" font-size="9" text-anchor="middle" style="fill:var(--muted)">'+labels[i]+'</text>';
+    });
+    return '<svg viewBox="0 0 '+w+' '+h+'">'+bars+vals+labs+'</svg>';
+  }
+
+  function toothBtn(p,n){
+    var has = p.teeth[n] && p.teeth[n].length>0;
+    var sel = selectedTooth===n;
+    return '<button class="tooth '+(has?'has':'')+' '+(sel?'sel':'')+'" data-n="'+n+'">'+
+      '<svg class="ticon" viewBox="0 0 24 24"><use href="#toothIcon"></use></svg>'+
+      '<span class="tnum">'+toFa(n)+'</span></button>';
+  }
+
+  function renderProfile(){
+    var p = activePatient;
+    setTopbar('profile');
+    document.getElementById('fab').hidden = true;
+    var segs = [['history','تاریخچه'],['files','فایل‌ها'],['teeth','نقشه دندان'],['plan','طرح درمان'],['pay','پرداخت‌ها']];
+    var head = '<div class="pheader"><div class="pname">'+esc(p.name)+'</div><div class="pmeta">'+p.phone+' · تولد '+p.dob+'</div></div>';
+    var segHtml = '<div class="segs">'+segs.map(function(s){ return '<button class="seg '+(activeSection===s[0]?'active':'')+'" data-seg="'+s[0]+'">'+s[1]+'</button>'; }).join('')+'</div>';
+    var body = '<div class="section">';
+
+    if(activeSection==='history'){
+      body += '<div class="subtitle" style="margin-top:2px;">تعداد ویزیت در ۶ ماه اخیر</div>';
+      body += '<div class="chartbox">'+barChart(p.visits)+'</div>';
+      body += '<div class="subtitle">سوابق درمانی</div>';
+      if(p.history.length===0){ body += '<div class="empty">هنوز سابقه‌ای ثبت نشده.</div>'; }
+      p.history.forEach(function(h){ body += '<div class="hist-item"><div class="d">'+h.d+'</div><div class="n">'+esc(h.n)+'</div></div>'; });
+    }
+    if(activeSection==='files'){
+      if(p.files.length===0){ body += '<div class="empty">فایلی آپلود نشده.</div>'; }
+      p.files.forEach(function(f){ body += '<div class="filechip"><span class="ic">📄</span><div><div class="fn">'+esc(f.n)+'</div><div class="fd">'+f.d+'</div></div></div>'; });
+      body += '<button class="addfile" id="addFileBtn">📎 افزودن فایل</button><input type="file" id="fileInput" hidden>';
+    }
+    if(activeSection==='teeth'){
+      body += '<div class="subtitle" style="margin-top:2px;">برای دیدن سوابق هر دندان، روی آن بزنید</div>';
+      body += '<div class="toothgrid" id="toothGridTop">'+Array.from({length:16},function(_,i){ var n=i+1; return toothBtn(p,n); }).join('')+'</div>';
+      body += '<div class="archgap"></div>';
+      body += '<div class="toothgrid" id="toothGridBottom">'+Array.from({length:16},function(_,i){ var n=i+17; return toothBtn(p,n); }).join('')+'</div>';
+      if(selectedTooth){
+        var recs = p.teeth[selectedTooth];
+        body += '<div class="toothpanel"><div class="tt">دندان شماره '+toFa(selectedTooth)+'</div>';
+        if(!recs || recs.length===0){ body += 'بدون سابقه درمانی'; }
+        else { recs.forEach(function(r){ body += '<div class="te"><b>'+r.t+'</b> — '+r.d+'<br>'+esc(r.n)+'</div>'; }); }
+        body += '</div>';
+      }
+    }
+    if(activeSection==='plan'){
+      if(p.plan.length===0){ body += '<div class="empty">طرح درمانی ثبت نشده.</div>'; }
+      else {
+        var total=0;
+        body += '<table class="plan"><tr class="head"><td>تاریخ</td><td>شرح</td><td>هزینه</td></tr>';
+        p.plan.forEach(function(x){ total+=x.c; body += '<tr><td>'+x.d+'</td><td>'+esc(x.i)+'</td><td>'+(x.c?money(x.c):'—')+'</td></tr>'; });
+        body += '<tr class="total"><td></td><td>مجموع</td><td>'+money(total)+'</td></tr></table>';
+      }
+    }
+    if(activeSection==='pay'){
+      var paid = p.payments.reduce(function(s,x){return s+x.a;},0);
+      var planTotal = p.plan.reduce(function(s,x){return s+x.c;},0);
+      var due = Math.max(planTotal-paid,0);
+      body += '<div class="paysum"><div class="box"><div class="l">مانده بدهی</div><div class="v">'+money(due)+'</div></div><div class="box"><div class="l">مجموع پرداختی</div><div class="v">'+money(paid)+'</div></div></div>';
+      if(p.payments.length===0){ body += '<div class="empty">پرداختی ثبت نشده.</div>'; }
+      p.payments.forEach(function(x){ body += '<div class="payrow"><span>'+x.d+'</span><b>'+money(x.a)+'</b><span class="st">'+x.s+'</span></div>'; });
+      body += '<div class="payform"><input id="payAmt" type="text" inputmode="numeric" placeholder="مبلغ (تومان)"><button class="btn solid small" id="payBtn">ثبت پرداخت</button></div>';
+    }
+    body += '</div>';
+    document.getElementById('mainArea').innerHTML = head+segHtml+body;
+
+    document.querySelectorAll('.seg').forEach(function(s){ s.addEventListener('click', function(){ activeSection=s.dataset.seg; selectedTooth=null; renderProfile(); }); });
+    if(activeSection==='files'){
+      document.getElementById('addFileBtn').addEventListener('click', function(){ document.getElementById('fileInput').click(); });
+      document.getElementById('fileInput').addEventListener('change', function(e){
+        if(e.target.files[0]){ p.files.push({n:e.target.files[0].name, d:formatDay(new Date())}); renderProfile(); }
+      });
+    }
+    if(activeSection==='teeth'){
+      document.querySelectorAll('.tooth').forEach(function(t){ t.addEventListener('click', function(){ selectedTooth = parseInt(t.dataset.n,10); renderProfile(); }); });
+    }
+    if(activeSection==='pay'){
+      document.getElementById('payBtn').addEventListener('click', function(){
+        var v = parseInt(document.getElementById('payAmt').value.replace(/[^0-9]/g,''),10);
+        if(!v) return;
+        p.payments.push({d:formatDay(new Date()), a:v, s:'پرداخت‌شده'});
+        renderProfile();
+      });
+    }
+  }
+
+  function render(){
+    if(activeTab==='today'){ renderToday(); }
+    else if(activeTab==='patients'){ activePatient ? renderProfile() : renderPatientsList(); }
+  }
+
+  document.querySelectorAll('.tabbtn').forEach(function(b){
+    b.addEventListener('click', function(){
+      activeTab = b.dataset.tab; activePatient=null;
+      document.querySelectorAll('.tabbtn').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      document.getElementById('formCard').hidden = true;
+      render();
+    });
+  });
+
+  var formCard = document.getElementById('formCard');
+  document.getElementById('fab').addEventListener('click', function(){
+    formCard.hidden = false;
+    document.getElementById('fTime').value=''; document.getElementById('fName').value=''; document.getElementById('fNote').value='';
+    document.getElementById('fTime').focus();
+  });
+  document.getElementById('cancelBtn').addEventListener('click', function(){ formCard.hidden = true; });
+  document.getElementById('saveBtn').addEventListener('click', function(){
+    var time = document.getElementById('fTime').value, name = document.getElementById('fName').value.trim(), note = document.getElementById('fNote').value.trim();
+    if(!time || !name) return;
+    var key = dateKey(today);
+    if(!appts[key]) appts[key]=[];
+    appts[key].push({id:Date.now(), time:time, name:name, note:note, status:'pending', reminder:false});
+    formCard.hidden = true; renderToday();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
